@@ -1,0 +1,114 @@
+# Praxis-RAG: AI Customer Support Agent
+
+A smart, conversational AI agent built with Django, Google Gemini, and LangChain. This application learns from uploaded documents to provide accurate, fact-based answers, acting as a reliable customer support assistant.
+
+**[Live Demo - Coming Soon!]**
+
+## Key Features
+
+* **Dynamic Knowledge Base:** Upload PDF documents through a web interface to teach the bot new information.
+* **Retrieval-Augmented Generation (RAG):** The AI uses a vector database (FAISS) to find relevant facts from your documents *before* answering, ensuring responses are accurate and grounded in the provided context.
+* **Asynchronous Background Processing:** Leverages Celery and Redis to process large documents without freezing the web application, providing a smooth user experience.
+* **Conversational Memory:** Remembers the flow of the conversation to answer follow-up questions effectively.
+
+---
+
+## The Project: What We Are Making
+
+The goal of this project is to build a practical, valuable AI tool that solves a real business problem: the need for instant, accurate customer support. Instead of a generic chatbot that relies on pre-programmed knowledge, this application creates a "specialist" agent that can be trained on any company's internal documents, product manuals, or FAQs. This demonstrates an ability to build not just a tech demo, but a production-ready business solution.
+
+---
+
+## Tech Stack
+
+* **Backend:** Python, Django
+* **AI & LLM:** Google Gemini API, LangChain
+* **RAG Pipeline:** `PyPDFLoader`, `RecursiveCharacterTextSplitter`, `FAISS` Vector Store
+* **Background Tasks:** Celery, Redis
+* **Development Environment:** Docker (for Redis), Python Virtual Environment
+* **Database:** SQLite (for development)
+
+---
+
+## The Journey: What We Have Done
+
+This project evolved significantly from its initial concept.
+
+1.  **Initial Chatbot:** We began by building a standard conversational chatbot using Django and the Gemini API. It was functional but lacked a specialized purpose.
+
+2.  **Implementing RAG:** To create real value, we integrated a full Retrieval-Augmented Generation (RAG) pipeline using LangChain. This involved:
+    * Creating a file upload system in Django.
+    * Using `PyPDFLoader` to extract text from documents.
+    * Chunking the text and generating vector embeddings with Google's models.
+    * Storing and retrieving these vectors from a FAISS database.
+    * Modifying the chat logic to fetch relevant context before calling the LLM.
+
+3.  **Building a Robust Backend:** A major challenge was processing documents efficiently. We implemented a professional-grade background processing system using Celery and Redis. This involved significant debugging and problem-solving on a Windows environment:
+    * **Solved Concurrency Issues:** Replaced the default Celery worker pool with `eventlet` to ensure stability on Windows.
+    * **Resolved Core Conflicts:** Fixed complex threading errors (`DatabaseError`) by conditionally applying `eventlet.monkey_patch()` only for Celery commands, ensuring it did not interfere with Django's core operations.
+    * **Established a Multi-Process Architecture:** The final setup involves three separate, stable processes (Django, Celery, Redis) working in harmony.
+
+---
+
+## How to Run Locally
+
+**Prerequisites:**
+* Python 3.10+
+* Docker Desktop (for Redis) or a local Redis installation
+* A `credentials.py` or environment variable for your `GEMINI_API_KEY`.
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [your-repo-url]
+    cd your_chatbot_project
+    ```
+
+2.  **Create and activate a virtual environment:**
+    ```bash
+    python -m venv venv
+    .\venv\Scripts\activate
+    ```
+
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *(Note: If you haven't created this file yet, run `pip freeze > requirements.txt`)*
+
+4.  **Run Migrations:**
+    ```bash
+    python manage.py migrate
+    ```
+
+5.  **Start the Services (in 3 separate terminals):**
+
+    * **Terminal 1: Start Redis**
+        ```bash
+        docker run -d -p 6379:6379 redis
+        ```
+
+    * **Terminal 2: Start the Celery Worker**
+        ```bash
+        celery -A your_chatbot_project worker -l info -P eventlet
+        ```
+
+    * **Terminal 3: Start the Django Server**
+        ```bash
+        python manage.py runserver
+        ```
+
+6.  **Access the Application:** Open your browser to `http://127.0.0.1:8000/`.
+
+---
+
+## Future Steps: What We Are Going to Do
+
+This project has a solid foundation. The next steps focus on polishing it into a complete, user-friendly application.
+
+* [ ] **Improve UI/UX:**
+    * Display a list of uploaded documents and their processing status (`pending`, `processing`, `ready`).
+    * Allow users to delete or manage documents.
+* [ ] **Multi-Tenancy:** Enable different users to have their own separate knowledge bases.
+* [ ] **Clear Knowledge Base:** Add a "Clear All Documents" button to easily reset the vector store for testing.
+* [ ] **Enhanced Streaming:** Implement true streaming for RAG responses to improve perceived performance.
+* [ ] **Deployment:** Deploy the entire application to a cloud service like Render or AWS to make it a live, shareable portfolio piece.
