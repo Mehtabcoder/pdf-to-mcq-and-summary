@@ -4,3 +4,7 @@ langchain-google-vertexai
 pypdf
 faiss-cpu
 python-dotenv
+langchain-google-genai
+langchain-community
+pymupdf
+langchain-core
