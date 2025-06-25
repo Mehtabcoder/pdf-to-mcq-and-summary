@@ -90,15 +90,15 @@ def load_document_details(file_bytes):
         st.session_state.all_pages_content = []
 
 # --- UI Components ---
-st.title("🚀 Praxis-RAG Pro: Advanced Document Interaction")
+st.title("🚀 Praxis-RAG ")
 st.markdown("Upload a PDF to unlock summaries, Q&A, and interactive quizzes—all powered by generative AI.")
 
 # --- Sidebar and File Handling Logic ---
 with st.sidebar:
-    st.header("📋 Controls")
+    st.header("📋 Document Controls")
     uploaded_file = st.file_uploader("Upload your PDF", type="pdf")
 
-    if st.button("🔄 Start Over & Clear Document"):
+    if st.button("Start Over & Clear Document"):
         for key in list(st.session_state.keys()):
             del st.session_state[key]
         initialize_session_state()
@@ -131,7 +131,7 @@ with st.sidebar:
         st.success(f"**{st.session_state.uploaded_file_name}** is ready!")
         st.info(f"Total Pages: **{st.session_state.num_pages}**")
     else:
-        st.info("Please upload a document to begin.")
+        st.info("⬆️ Please upload a document to begin.")
 
 
 # --- Main Application Tabs ---
@@ -229,7 +229,7 @@ with tab3:
     if st.session_state.all_pages_content:
         selected_text_mcq, info_msg_mcq = display_page_selector("mcq")
         st.info(info_msg_mcq)
-        num_mcqs = st.slider("Number of MCQs to generate:", min_value=2, max_value=10, value=3, key="mcq_num")
+        num_mcqs = st.slider("Number of MCQs to generate:", min_value=2, max_value=6, value=3, key="mcq_num")
         if st.button("🧠 Generate Quiz", disabled=not selected_text_mcq):
             st.session_state.mcqs_generated = []
             st.session_state.user_mcq_selections = {}
