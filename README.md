@@ -1,0 +1,73 @@
+# 📄 Praxis-RAG Lite: Intelligent Document Q&A Bot
+
+**Live Demo:** [https://pdftosummarizeandmcq.streamlit.app/]
+
+---
+
+## 🚀 Project Overview
+
+Praxis-RAG Lite is a powerful and intuitive web application built with Streamlit that transforms how users interact with PDF documents. Leveraging advanced Retrieval Augmented Generation (RAG) techniques, it allows users to upload any PDF and intelligently extract, summarize, test knowledge, or locate specific information from its content. This project showcases practical applications of Large Language Models (LLMs) and vector databases for efficient document understanding.
+
+## ✨ Key Features & Skills Demonstrated
+
+* **Intelligent Q&A (RAG-powered):**
+    * Answers natural language questions based *solely* on the uploaded PDF content, significantly reducing LLM hallucinations.
+    * **Skill:** Deep understanding and implementation of RAG architecture (embedding, vector search, prompt conditioning).
+    * **Advanced:** Provides source page numbers with answers for verifiability. Works efficiently across *entire* large documents.
+
+* **Smart Document Summarization:**
+    * Condenses selected sections or the first few pages of a PDF into concise summaries.
+    * **Skill:** LLM prompt engineering for extractive/abstractive summarization.
+    * **Constraint Handling:** Implements adaptive logic to summarize only selected pages or the initial content for very large documents, demonstrating awareness of LLM token limits and system design for scalability.
+
+* **Automated MCQ Generation:**
+    * Generates multiple-choice questions (MCQs) from selected PDF pages to aid learning or content assessment.
+    * **Skill:** Structured prompt engineering for specific, formatted LLM output.
+    * **Constraint Handling:** Limits MCQ generation to selected pages/first few pages and a maximum quantity, showing practical API usage management.
+
+* **Targeted Section Finder:**
+    * Quickly locates and displays the most relevant sections of a document based on user queries, providing precise page and approximate line numbers.
+    * **Skill:** Effective use of vector similarity search for efficient information retrieval and context awareness.
+
+## 🛠️ Technology Stack
+
+* **Python:** Core programming language.
+* **Streamlit:** For rapid prototyping and building an interactive, user-friendly web interface.
+* **LangChain:** Orchestration framework for building LLM applications, managing chains, retrievers, and document processing.
+* **Google Gemini API (gemini-1.5-flash):** Utilized for powerful embeddings and natural language understanding/generation. Chosen for its efficiency and large context window.
+* **FAISS:** Facebook AI Similarity Search for efficient similarity search on vector embeddings.
+* **PyMuPDF (fitz):** For robust PDF handling and accurate page-level content extraction.
+* **`python-dotenv`:** Secure management of API keys via environment variables.
+
+## 🔒 Data Privacy & Security Considerations
+
+* **Temporary Storage:** Uploaded PDF documents and their content are processed in-memory and temporarily stored only for the duration of a user's active session. No persistent storage of user data is performed by this application.
+* **API Key Security:** Google API keys are securely managed via Streamlit Cloud's secrets management, ensuring they are never exposed in the codebase or public repository.
+* **LLM Data Handling:** Content sent to the Google Gemini API for processing is handled according to Google's data privacy policies. Generally, this data is not used for training Google's foundational models.
+* **Robustness:** Implements basic error handling and input validation to enhance application stability.
+
+## ⚙️ How to Run Locally (For Developers)
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/Mehtabcoder/pdf-to-mcq-and-summary.git](https://github.com/Mehtabcoder/pdf-to-mcq-and-summary.git)
+    cd pdf-to-mcq-and-summary/LLMWEB
+    ```
+2.  **Create a virtual environment:**
+    ```bash
+    python -m venv venv
+    .\venv\Scripts\activate  # On Windows
+    source venv/bin/activate # On macOS/Linux
+    ```
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  **Set up your Google API Key:**
+    * Create a `.env` file in the `LLMWEB` directory.
+    * Add your Google API Key to it: `GOOGLE_API_KEY="YOUR_API_KEY_HERE"`
+    * (Get your key from [Google AI Studio](https://aistudio.google.com/app/apikey) or Google Cloud Console)
+5.  **Run the Streamlit app:**
+    ```bash
+    streamlit run praxis_rag_lite/streamlit_app.py
+    ```
